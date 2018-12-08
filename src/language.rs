@@ -1,8 +1,8 @@
-use rustc_hash::FxHashMap;
+use hashbrown::HashMap;
 use error::{ErrorKind, Result};
 
 pub struct WordMap {
-    inner: FxHashMap<&'static str, u16>
+    inner: HashMap<&'static str, u16>
 }
 
 impl WordMap {
@@ -14,8 +14,11 @@ impl WordMap {
     }
 }
 
+
+
 mod lazy {
     use super::WordMap;
+    use once_cell::sync::Lazy;
 
     /// lazy generation of the word list
     fn gen_wordlist(lang_words: &str) -> Vec<&str> {
@@ -29,34 +32,33 @@ mod lazy {
     /// lazy generation of the word map
     fn gen_wordmap(wordlist: &[&'static str]) -> WordMap {
         let inner = wordlist.iter()
-                            .enumerate()
-                            .map(|(i, item)| (*item, i as u16))
-                            .collect();
+            .enumerate()
+            .map(|(i, item)| (*item, i as u16))
+            .collect();
 
         WordMap {
             inner
         }
     }
 
-    lazy_static! {
-        pub static ref WORDLIST_ENGLISH: Vec<&'static str> = gen_wordlist(include_str!("langs/english.txt"));
-        pub static ref WORDLIST_CHINESE_SIMPLIFIED: Vec<&'static str> = gen_wordlist(include_str!("langs/chinese_simplified.txt"));
-        pub static ref WORDLIST_CHINESE_TRADITIONAL: Vec<&'static str> = gen_wordlist(include_str!("langs/chinese_traditional.txt"));
-        pub static ref WORDLIST_FRENCH: Vec<&'static str> = gen_wordlist(include_str!("langs/french.txt"));
-        pub static ref WORDLIST_ITALIAN: Vec<&'static str> = gen_wordlist(include_str!("langs/italian.txt"));
-        pub static ref WORDLIST_JAPANESE: Vec<&'static str> = gen_wordlist(include_str!("langs/japanese.txt"));
-        pub static ref WORDLIST_KOREAN: Vec<&'static str> = gen_wordlist(include_str!("langs/korean.txt"));
-        pub static ref WORDLIST_SPANISH: Vec<&'static str> = gen_wordlist(include_str!("langs/spanish.txt"));
+    pub static WORDLIST_ENGLISH: Lazy<Vec<&'static str>> = sync_lazy!{ gen_wordlist(include_str!("langs/english.txt")) };
+    pub static WORDLIST_CHINESE_SIMPLIFIED: Lazy<Vec<&'static str>> = sync_lazy!{ gen_wordlist(include_str!("langs/chinese_simplified.txt")) };
+    pub static WORDLIST_CHINESE_TRADITIONAL: Lazy<Vec<&'static str>> = sync_lazy!{ gen_wordlist(include_str!("langs/chinese_traditional.txt")) };
+    pub static WORDLIST_FRENCH: Lazy<Vec<&'static str>> = sync_lazy!{ gen_wordlist(include_str!("langs/french.txt")) };
+    pub static WORDLIST_ITALIAN: Lazy<Vec<&'static str>> = sync_lazy!{ gen_wordlist(include_str!("langs/italian.txt")) };
+    pub static WORDLIST_JAPANESE: Lazy<Vec<&'static str>> = sync_lazy!{ gen_wordlist(include_str!("langs/japanese.txt")) };
+    pub static WORDLIST_KOREAN: Lazy<Vec<&'static str>> = sync_lazy!{ gen_wordlist(include_str!("langs/korean.txt")) };
+    pub static WORDLIST_SPANISH: Lazy<Vec<&'static str>> = sync_lazy!{ gen_wordlist(include_str!("langs/spanish.txt")) };
 
-        pub static ref WORDMAP_ENGLISH: WordMap = gen_wordmap(&WORDLIST_ENGLISH);
-        pub static ref WORDMAP_CHINESE_SIMPLIFIED: WordMap = gen_wordmap(&WORDLIST_CHINESE_SIMPLIFIED);
-        pub static ref WORDMAP_CHINESE_TRADITIONAL: WordMap = gen_wordmap(&WORDLIST_CHINESE_TRADITIONAL);
-        pub static ref WORDMAP_FRENCH: WordMap = gen_wordmap(&WORDLIST_FRENCH);
-        pub static ref WORDMAP_ITALIAN: WordMap = gen_wordmap(&WORDLIST_ITALIAN);
-        pub static ref WORDMAP_JAPANESE: WordMap = gen_wordmap(&WORDLIST_JAPANESE);
-        pub static ref WORDMAP_KOREAN: WordMap = gen_wordmap(&WORDLIST_KOREAN);
-        pub static ref WORDMAP_SPANISH: WordMap = gen_wordmap(&WORDLIST_SPANISH);
-    }
+    pub static WORDMAP_ENGLISH: Lazy<WordMap> = sync_lazy!{ gen_wordmap(&WORDLIST_ENGLISH) };
+    pub static WORDMAP_CHINESE_SIMPLIFIED: Lazy<WordMap> = sync_lazy!{  gen_wordmap(&WORDLIST_CHINESE_SIMPLIFIED) };
+    pub static WORDMAP_CHINESE_TRADITIONAL: Lazy<WordMap> = sync_lazy!{ gen_wordmap(&WORDLIST_CHINESE_TRADITIONAL) };
+    pub static WORDMAP_FRENCH: Lazy<WordMap> = sync_lazy!{ gen_wordmap(&WORDLIST_FRENCH) };
+    pub static WORDMAP_ITALIAN: Lazy<WordMap> = sync_lazy!{ gen_wordmap(&WORDLIST_ITALIAN) };
+    pub static WORDMAP_JAPANESE: Lazy<WordMap> = sync_lazy!{ gen_wordmap(&WORDLIST_JAPANESE) };
+    pub static WORDMAP_KOREAN: Lazy<WordMap> = sync_lazy!{ gen_wordmap(&WORDLIST_KOREAN) };
+    pub static WORDMAP_SPANISH: Lazy<WordMap> = sync_lazy!{ gen_wordmap(&WORDLIST_SPANISH) };
+
 }
 
 /// The language determines which words will be used in a mnemonic phrase, but also indirectly
