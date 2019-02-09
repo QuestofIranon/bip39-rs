@@ -1,7 +1,9 @@
-use crate::error::ErrorKind;
+use crate::{
+    error::ErrorKind,
+    util::{Bits, Bits11},
+};
 use failure::Error;
 use hashbrown::HashMap;
-use crate::util::{Bits, Bits11};
 
 pub struct WordMap {
     inner: HashMap<&'static str, Bits11>,

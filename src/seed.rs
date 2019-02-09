@@ -1,5 +1,4 @@
-use crate::crypto::pbkdf2;
-use crate::mnemonic::Mnemonic;
+use crate::{crypto::pbkdf2, mnemonic::Mnemonic};
 use std::fmt;
 
 /// The secret value used to derive HD wallet addresses from a [`Mnemonic`][Mnemonic] phrase.
