@@ -10,6 +10,7 @@ readme = "README.md"
 description = "A Rust implementation of BIP-0039"
 documentation = "https://docs.rs/bip39"
 keywords = ["bip39", "bitcoin", "mnemonic"]
+edition = "2018"
 
 [lib]
 name = "bip39"

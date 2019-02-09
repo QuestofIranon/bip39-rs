@@ -1,5 +1,5 @@
-use crypto::pbkdf2;
-use mnemonic::Mnemonic;
+use crate::crypto::pbkdf2;
+use crate::mnemonic::Mnemonic;
 use std::fmt;
 
 /// The secret value used to derive HD wallet addresses from a [`Mnemonic`][Mnemonic] phrase.
@@ -29,9 +29,7 @@ impl Seed {
         let salt = format!("mnemonic{}", password);
         let bytes = pbkdf2(mnemonic.phrase().as_bytes(), &salt);
 
-        Self {
-            bytes,
-        }
+        Self { bytes }
     }
 
     /// Get the seed value as a byte slice
