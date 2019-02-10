@@ -17,14 +17,14 @@ name = "bip39"
 path = "src/lib.rs"
 
 [features]
-chinese-simplified = []
-chinese-traditional = []
 # Note: English is the standard for bip39 so always included
-french = []
-italian = []
-japanese = []
-korean = []
-spanish = []
+chinese-simplified = ["unicode-normalization"]
+chinese-traditional = ["unicode-normalization"]
+french = ["unicode-normalization"]
+italian = ["unicode-normalization"]
+japanese = ["unicode-normalization"]
+korean = ["unicode-normalization"]
+spanish = ["unicode-normalization"]
 
 default = ["chinese-simplified", "chinese-traditional", "french", "italian", "japanese", "korean", "spanish"]
 
@@ -38,5 +38,9 @@ pbkdf2 = { version = "0.3.0", features=["parallel"], default-features = false }
 rand = "0.6.5"
 once_cell = { version = "0.1.8", features = [ "parking_lot" ] }
 
+# Optional dependencies
+unicode-normalization = {version = "0.1.8", optional=true}
+
 [dev-dependencies]
 hex = "0.3.2"
+paste = "0.1.4"
