@@ -30,28 +30,26 @@ macro_rules! tests {
     (
     [$language:ident, $password:expr]:
     $([$entropy_hex:expr, $phrase:expr, $seed_hex:expr]),*) => {
-    		paste::item!{
+    	paste::item!{
 
-            #[test]
-            #[allow(non_snake_case)]
-            fn [<test_all_mnemonic_ $language>]() {
-                $(
-                    test_mnemonic($entropy_hex, $phrase, crate::Language::$language);
-                )*
-            }
+		#[test]
+		#[allow(non_snake_case)]
+		fn [<test_all_mnemonic_ $language>]() {
+			$(
+				test_mnemonic($entropy_hex, $phrase, crate::Language::$language);
+			)*
+		}
 
+		#[test]
+		#[allow(non_snake_case)]
+		fn [<test_all_seed_ $language>]() {
+			$(
+				test_seed($phrase, $password, $seed_hex, crate::Language:: $language);
+			)*
+		}
 
-
-            #[test]
-			#[allow(non_snake_case)]
-            fn [<test_all_seed_ $language>]() {
-                $(
-                    test_seed($phrase, $password, $seed_hex, crate::Language:: $language);
-                )*
-            }
-
-    }
-};
+    	}
+	};
 }
 
 tests! {
@@ -181,7 +179,6 @@ tests! {
 
 tests! {
     // https://github.com/bitcoinjs/bip39/blob/master/test/vectors.json
-
    [Japanese, "㍍ガバヴァぱばぐゞちぢ十人十色"]:
    [
      "00000000000000000000000000000000",
@@ -302,5 +299,5 @@ tests! {
      "15da872c95a13dd738fbf50e427583ad61f18fd99f628c417a61cf8343c90419",
      "うちゅう　ふそく　ひしょ　がちょう　うけもつ　めいそう　みかん　そざい　いばる　うけとる　さんま　さこつ　おうさま　ぱんつ　しひょう　めした　たはつ　いちぶ　つうじょう　てさぎょう　きつね　みすえる　いりぐち　かめれおん",
      "346b7321d8c04f6f37b49fdf062a2fddc8e1bf8f1d33171b65074531ec546d1d3469974beccb1a09263440fc92e1042580a557fdce314e27ee4eabb25fa5e5fe"
-]
+   ]
 }
